@@ -1,11 +1,14 @@
 from tkinter import *
 import random
+from tkinter.filedialog import askopenfilename
 from PIL import Image, ImageTk
 
 
 root = Tk()
 root.title('Crypto - Paquet de cartes')
-root.geometry("900x500")
+root.minsize(100, 200)
+# root.attributes('-fullscreen', True)
+# root.overrideredirect(True)
 root.configure(background="green")
 
 # Resize Cards
@@ -14,7 +17,12 @@ def resize_cards(card):
 	our_card_img = Image.open(card)
 
 	# Resize The Image
-	our_card_resize_image = our_card_img.resize((150, 218))
+	# original size
+	# our_card_resize_image = our_card_img.resize((150, 218))
+	# 60% of original size
+	our_card_resize_image = our_card_img.resize((100, 145))
+	# 30% of original size
+	# our_card_resize_image = our_card_img.resize((50, 73))
 	
 	# output the card
 	global our_card_image
@@ -22,6 +30,12 @@ def resize_cards(card):
 
 	# Return that card
 	return our_card_image
+
+# Quit app
+def quit():
+	root.quit()
+
+cards = []
 
 # Shuffle The Cards
 def shuffle():
@@ -51,48 +65,51 @@ def shuffle():
 	random.shuffle(deck)
 
 	print(deck)
-	# Create our players
-	global player
-	player = []
 
-	# Grab a random Card For Dealer
-	# card = random.choice(deck)
-	# Remove Card From Deck
-	# deck.remove(card)
+	deck_frame = LabelFrame(my_frame, text="Les cartes", bd=0)
+	deck_frame.grid(row=0, column=0)
 
-	# Grab a random Card For Player
-	# card = random.choice(deck)
-	# Remove Card From Deck
-	# deck.remove(card)
-	# Append Card To Dealer List
-	# player.append(card)
-	# Output Card To Screen
-	global player_image
-	player_image = resize_cards(f'src/images/{card}.png')
-	player_label.config(image=player_image)
+	card_label_ = {}
+	grid_column = 0
+	grid_row = 0
+	for card in deck:
+		if (deck.index(card) % 18) == 0:
+			grid_column = 0
+			grid_row += 1
 
-	#player_label.config(text=card)
+		imageCard = resize_cards(f'src/images/{card}.png')
+		card_label_[card] = Label(deck_frame)
+		card_label_[card].grid(column=grid_column, row=grid_row, ipady=4, ipadx=2)
+		card_label_[card].config(image=imageCard)
+		grid_column += 1
+		cards.append(imageCard)
 
 	# Put number of remaining cards in title bar
 	root.title(f'Codemy.com - {len(deck)} Cards Left')
+	root.update() 
 
+# Choose file
+def chooseFile():
+	fileToCrypt = askopenfilename()
 
 my_frame = Frame(root, bg="green")
 my_frame.pack(pady=20)
 
-player_frame = LabelFrame(my_frame, text="Player", bd=0)
-player_frame.grid(row=0, column=1, ipadx=20)
-
-player_label = Label(player_frame, text='')
-player_label.pack(pady=20)
-
-
-# Create a couple buttons
+# Button for shuffle the deck
 shuffle_button = Button(root, text="Melanger le jeux de carte", font=("Helvetica", 14), command=shuffle)
 shuffle_button.pack(pady=20)
 
 
+# Button for choose the file to crypte
+shuffle_button = Button(root, text="Choisir le fichier à crypter", font=("Helvetica", 14), command=chooseFile)
+shuffle_button.pack(pady=20)
+
+
+# Button for quit the app
+shuffle_button = Button(root, text="Quitter", font=("Helvetica", 14), command=quit)
+shuffle_button.pack(pady=20)
+
 # Shuffle Deck On Start
-# shuffle()
+shuffle()
 
 root.mainloop() 
