@@ -4,8 +4,7 @@ from PIL import Image, ImageTk
 
 
 root = Tk()
-root.title('Codemy.com - Card Deck')
-# root.iconbitmap('c:/gui/codemy.ico')
+root.title('Crypto - Paquet de cartes')
 root.geometry("900x500")
 root.configure(background="green")
 
@@ -30,23 +29,28 @@ def shuffle():
 	deck = []
 
 	# Create the new deck
-	while (deck.__len__() < 55): 
-		card = random.randint(1,54)
-		# if card is not deck:
-		if card not in deck:
-			deck.append(card)
+	# while (deck.__len__() < 55): 
+	# 	card = random.randint(1,54)
+	# 	if card not in deck:
+	# 		deck.append(card)
 
-	print(deck)
+	# print(deck)
 
 	# Define Our Deck
 	suits = ["diamonds", "clubs", "hearts", "spades"]
 	values = range(1, 14)
 	# 11 = Jack, 12=Queen, 13=King
 
-	# for suit in suits:
-	# 	for value in values:
-	# 		deck.append(f'{value}_of_{suit}')
+	for suit in suits:
+		for value in values:
+			deck.append(f'{value}{suit}')
 
+	deck.append('jokerblack')
+	deck.append('jokerred')
+
+	random.shuffle(deck)
+
+	print(deck)
 	# Create our players
 	global player
 	player = []
