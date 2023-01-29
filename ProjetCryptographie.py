@@ -5,6 +5,8 @@ from PIL import Image, ImageTk
 
 # Variable
 deck = []
+alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+cryptAlphabet = {}
 
 root = Tk()
 root.title('Crypto - Paquet de cartes')
@@ -43,14 +45,6 @@ cards = []
 def shuffle():
 	global deck
 	deck.clear()
-
-	# Create the new deck
-	# while (deck.__len__() < 55): 
-	# 	card = random.randint(1,54)
-	# 	if card not in deck:
-	# 		deck.append(card)
-
-	# print(deck)
 
 	# Define Our Deck
 	suits = ["clubs", "diamonds", "hearts", "spades"]
@@ -93,16 +87,27 @@ def printDeck():
 	root.title(f'Codemy.com - {len(deck)} Cards Left')
 	root.update() 
 
+# Evaluate the value to the card give in parameter
+def evaluatCard(card):
+	suits = {"clubs": 1, "diamonds": 2, "hearts": 3, "spades": 4}
+	
+	infoCard = card.split("_")
+	valueCard = int(infoCard[0]) * int(suits[infoCard[1]])
+	return valueCard
+
 # Choose file
 def chooseFile():
-	fileToCrypt = askopenfilename()
+	fileToCrypt = askopenfilename(parent=root, title="Ouvrir votre document", filetypes=[('txt files', '.txt')])
+	with open(fileToCrypt) as file:
+		print(file.read())
 
-# Step 1 for the deck
-def step1():
-	fileToCrypt = askopenfilename()
+# Operation 1
+def operation1():
+	# TODO
+	exit()
 
-# Step 2 for the deck
-def step2():
+# Operation 2
+def operation2():
 	global deck
 	jokerRed = deck.index("jokerred")
 
@@ -132,10 +137,8 @@ def step2():
 		deck.clear()
 		deck = deckTemp1 + deckTemp2 + deckTemp3 + deckTemp4
 
-	printDeck()
-
-# Step 3 for the deck
-def step3():
+# Operation 3
+def operation3():
 	global deck
 	
 	# Search the position of the two jokers
@@ -163,35 +166,77 @@ def step3():
 	deck.clear()
 	deck = deckTemp2 + deckTemp4 + deckTemp1 + deckTemp5 + deckTemp3 
 	print(deck)
-	printDeck()
 
-# Step 4 for the deck
-def step4():
+# Operation 4
+def operation4():
 	global deck
-
-	suits = {"clubs": 1, "diamonds": 2, "hearts": 3, "spades": 4}
-	values = range(1, 14)
-	# 11 = Jack, 12=Queen, 13=King
 
 	lastCard = deck[len(deck)-1]
 	valueCard = 0
 	if(lastCard == "jokerred" or lastCard == "jokerblack"):
 		valueCard = 53
-		print(valueCard)
 	else:
-		infoLastCard = lastCard.split("_")
-		valueCard = int(infoLastCard[0]) * int(suits[infoLastCard[1]])
-		print(infoLastCard[0])
-		print(suits[infoLastCard[1]])
-		print(valueCard)
+		valueCard = evaluatCard(lastCard)
 
-	print(lastCard)
+	deckTemp1 = deck[0:valueCard]
+	deckTemp2 = deck[valueCard:len(deck)-1]
+	deck.clear()
+	deck = deckTemp2 + deckTemp1
+	deck.append(lastCard)
 
+# Operation 5
+def operation5():
+	global deck
+
+	firstCard = deck[0]
+	valueCard = 0
+	if(firstCard == "jokerred" or firstCard == "jokerblack"):
+		# WHAT VALUE ??????
+		printDeck()
+	else:
+		valueCard = evaluatCard(firstCard)
+
+	cardPseudoAlea = deck[valueCard]
+	print(cardPseudoAlea)
+	if(cardPseudoAlea == "jokerred" or cardPseudoAlea == "jokerblack"):
+		# operation1()
+		operation2()
+		operation3()
+		operation4()
+		operation5()
+
+	else:		
+		valueCardPseudoAlea = evaluatCard(cardPseudoAlea)
+		if(valueCardPseudoAlea > 26):
+			valueCardPseudoAlea = valueCardPseudoAlea - 26
+		
+		cryptAlphabet[firstCard] = alphabet[valueCardPseudoAlea - 1]
+		print(cryptAlphabet)
+
+# Step 1 for the deck
+def step1():
+	operation1()
+	printDeck()
+
+# Step 2 for the deck
+def step2():
+	operation2()
+	printDeck()
+
+# Step 3 for the deck
+def step3():
+	operation3()
+	printDeck()
+
+# Step 4 for the deck
+def step4():
+	operation4()
 	printDeck()
 
 # Step 5 for the deck
 def step5():
-	fileToCrypt = askopenfilename()
+	operation5()
+	printDeck()
 
 my_frame = Frame(root, bg="green")
 my_frame.pack(pady=20)
@@ -227,3 +272,9 @@ quit_button.pack(pady=20)
 shuffle()
 
 root.mainloop() 
+
+
+# A voir
+# 1 - Retrier le jeu après chaque couple carte - alphabet
+# 2 - Etape 5 valeur des joker rouge et noir
+# 3 - Vérifier que la valeur de la carte n'est pas déjà utiliser pour code un morceau de l'alphabet
