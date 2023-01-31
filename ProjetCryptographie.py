@@ -84,7 +84,7 @@ def printDeck():
 		cards.append(imageCard)
 
 	# Put number of remaining cards in title bar
-	root.title(f'Codemy.com - {len(deck)} Cards Left')
+	root.title('CryptoProjet')
 	root.update() 
 
 # Evaluate the value to the card give in parameter
@@ -103,8 +103,13 @@ def chooseFile():
 
 # Operation 1
 def operation1():
-	# TODO
-	exit()
+	jokerblank = deck.index("jokerblack")
+	if jokerblank == 54 :
+		deck[54]=deck[2]
+		deck[2] = "jokerblack"
+	else :
+		deck[jokerblank]=deck[jokerblank+1]
+		deck[jokerblank+1] = "jokerblack"
 
 # Operation 2
 def operation2():
