@@ -248,7 +248,8 @@ def step4():
 def step5():
 	operation5()
 	printDeck()
- 
+
+# Function to crypt the file
 def encrypted():
     global texttodecode
     global iration 
@@ -264,9 +265,11 @@ def encrypted():
             if hello >= 26 : 
                 hello = hello - 26
             clef+=(alphabet[hello-1]) 
-    cryptedmessage(clef)
 
-def cryptedmessage(clef):
+    cryptedMessage(clef)
+
+# Fonction to addition value of alphabet and la valeur de la clé 
+def cryptedMessage(clef):
    global texttodecode
    global iration
    messagecrypted=''
