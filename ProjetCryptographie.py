@@ -7,9 +7,11 @@ from PIL import Image, ImageTk
 deck = []
 alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 cryptAlphabet = {}
+texttodecode = ''
+iration = 0
 
 root = Tk()
-root.title('Crypto - Paquet de cartes')
+root.title('Crypto - Message a coder')
 root.minsize(100, 200)
 # root.attributes('-fullscreen', True)
 # root.overrideredirect(True)
@@ -97,19 +99,23 @@ def evaluatCard(card):
 
 # Choose file
 def chooseFile():
-	fileToCrypt = askopenfilename(parent=root, title="Ouvrir votre document", filetypes=[('txt files', '.txt')])
-	with open(fileToCrypt) as file:
-		print(file.read())
+    global texttodecode
+    fileToCrypt = askopenfilename(parent=root, title="Ouvrir votre document", filetypes=[('txt files', '.txt')])
+    with open(fileToCrypt) as file:
+        texttodecode=file.readlines()
+        print("caca")
+        print(texttodecode)
+        
 
 # Operation 1
 def operation1():
-	jokerblank = deck.index("jokerblack")
-	if jokerblank == 54 :
-		deck[54]=deck[2]
-		deck[2] = "jokerblack"
+	jokerblack = deck.index("jokerblack")
+	if jokerblack == 53 :
+		deck[53]=deck[1]
+		deck[1] = "jokerblack"	
 	else :
-		deck[jokerblank]=deck[jokerblank+1]
-		deck[jokerblank+1] = "jokerblack"
+		deck[jokerblack]=deck[jokerblack+1]
+		deck[jokerblack+1] = "jokerblack"
 
 # Operation 2
 def operation2():
@@ -204,7 +210,7 @@ def operation5():
 	cardPseudoAlea = deck[valueCard]
 	print(cardPseudoAlea)
 	if(cardPseudoAlea == "jokerred" or cardPseudoAlea == "jokerblack"):
-		# operation1()
+		operation1()
 		operation2()
 		operation3()
 		operation4()
@@ -242,6 +248,33 @@ def step4():
 def step5():
 	operation5()
 	printDeck()
+ 
+def encrypted():
+    global texttodecode
+    global iration 
+    clef = ""
+    while len(clef) < len(texttodecode[iration]):
+        operation1()
+        operation2()
+        operation3()
+        operation4()
+        operation5()
+        if(deck[0] != "jokerblack" or deck[0] != "jokerred"):
+            hello = evaluatCard(deck[0])
+            if hello >= 26 : 
+                hello = hello - 26
+            clef+=(alphabet[hello-1]) 
+    cryptedmessage(clef)
+
+def cryptedmessage(clef):
+   global texttodecode
+   global iration
+   messagecrypted=''
+   i=0
+   while len(messagecrypted)<len(texttodecode[iration]):
+    messagecrypted+=alphabet.index(texttodecode[i])+alphabet.index(clef[i])
+    i+=1
+   print(messagecrypted)
 
 my_frame = Frame(root, bg="green")
 my_frame.pack(pady=20)
@@ -264,6 +297,12 @@ step4_button.pack(side=LEFT, ipady=4, ipadx=2)
 step5_button = Button(test_frame, text="Etape 5", font=("Helvetica", 14), command=step5)
 step5_button.pack(side=LEFT, ipady=4, ipadx=2)
 
+
+# Button for choose the file to lauch encryptage
+file_button = Button(root, text="Lancer l'encryptage", font=("Helvetica", 14), command=encrypted)
+file_button.pack(pady=20)
+
+
 # Button for choose the file to crypte
 file_button = Button(root, text="Choisir le fichier à crypter", font=("Helvetica", 14), command=chooseFile)
 file_button.pack(pady=20)
@@ -282,4 +321,3 @@ root.mainloop()
 # A voir
 # 1 - Retrier le jeu après chaque couple carte - alphabet
 # 2 - Etape 5 valeur des joker rouge et noir
-# 3 - Vérifier que la valeur de la carte n'est pas déjà utiliser pour code un morceau de l'alphabet
