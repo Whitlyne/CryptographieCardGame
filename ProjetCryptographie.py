@@ -115,11 +115,20 @@ def chooseFile():
         textSplit = text.replace(" ", "")
 		# Suppression des retours chariots
         textSplit = textSplit.replace("\n", "")
+        # Mise en minuscule de la chaine de caractere
+        textSplit = textSplit.lower()
         texttodecodetemp.append(textSplit)
 
     texttodecode.clear()
     texttodecode = texttodecodetemp
     print(texttodecode)
+
+
+def write_array_to_file(array, filename):
+    with open(filename, 'w') as file:
+        for item in array:
+            file.write(str(item) + '\n')
+    print(f"Tableau écrit dans le fichier '{filename}'.")
 
 # Operation 1
 def operation1():
@@ -236,11 +245,13 @@ def operation5():
 	return valueCardPseudoAlea
 
 # Function to crypt the file
-def encrypted():
+def encrypted(val):
 	global texttodecode
 	global clef
+	global deck
 	subClef = ""
-
+	if(val == "True"):
+		write_array_to_file(deck,"deckToSend.txt")
 	#  Boucle pour parcourir tous les éléments de la liste 
 	#  while len(clef) < totalLengOfListTextToDecode:
 	for text in texttodecode:
@@ -257,19 +268,77 @@ def encrypted():
 
 	printDeck()
 	print(clef)
-	# cryptedMessage(clef)
+	cryptedMessage(clef,val)
 
 # Fonction to addition value of alphabet and la valeur de la clé 
-def cryptedMessage(clef):
-   global texttodecode
-   global iration
-   messagecrypted=''
-   i=0
-   while len(messagecrypted)<len(texttodecode[iration]):
-    messagecrypted+=alphabet.index(texttodecode[i])+alphabet.index(clef[i])
-    i+=1
-   print(messagecrypted)
+def cryptedMessage(clef,val):
+	global texttodecode
+	global iration
+	global alphabet
+	messagecrypted=[]
+	ligne = ''
+	if (val == "True"):
+		for string1, string2 in zip(texttodecode, clef):
+			for i in range(len(string1)) :
+				tempo = (alphabet.index(string1[i]) + alphabet.index(string2[i]))
+				if(tempo>25):
+					tempo = tempo - 25 
+				ligne +=alphabet[tempo]
+			messagecrypted.append(ligne)
+			ligne=""
+		write_array_to_file(messagecrypted,'textCrypted.txt')
+	else :
+		for string1, string2 in zip(texttodecode, clef):
+			for i in range(len(string1)) : 
+				tempo = (alphabet.index(string1[i]) - alphabet.index(string2[i]))
+				if(tempo < 0  ):
+					tempo = tempo + 25 
+				ligne +=alphabet[tempo]
+			messagecrypted.append(ligne)
+			ligne=""
+		write_array_to_file(messagecrypted,'textDecrypted.txt')
 
+def decryptage():
+    global deck
+    global texttodecode
+    futurdeck = askopenfilename(parent=root, title="Ouvrir votre paquet de cartes", filetypes=[('txt files', '.txt')])
+    with open(futurdeck) as file:
+        deck=file.readlines()
+    
+    decktemp = []
+    for text in deck:
+		# Suppression des espaces
+        textSplit = text.replace(" ", "")
+		# Suppression des retours chariots
+        textSplit = textSplit.replace("\n", "")
+        # Mise en minuscule de la chaine de caractere
+        textSplit = textSplit.lower()
+        decktemp.append(textSplit)
+    
+    deck.clear()
+    deck = decktemp
+    print(deck)
+    
+    fileToCrypt = askopenfilename(parent=root, title="Ouvrir votre document", filetypes=[('txt files', '.txt')])
+    with open(fileToCrypt) as file:
+        texttodecode=file.readlines()
+    
+    texttodecodetemp = []
+    for text in texttodecode:
+		# Suppression des espaces
+        textSplit = text.replace(" ", "")
+		# Suppression des retours chariots
+        textSplit = textSplit.replace("\n", "")
+        # Mise en minuscule de la chaine de caractere
+        textSplit = textSplit.lower()
+        texttodecodetemp.append(textSplit)
+    
+    texttodecode.clear()
+    texttodecode = texttodecodetemp
+    print(texttodecode)
+    
+    encrypted("False")
+    
 # Step 1 for the deck
 def step1():
 	operation1()
@@ -316,14 +385,17 @@ step4_button.pack(side=LEFT, ipady=4, ipadx=2)
 step5_button = Button(test_frame, text="Etape 5", font=("Helvetica", 14), command=step5)
 step5_button.pack(side=LEFT, ipady=4, ipadx=2)
 
-
-# Button for choose the file to lauch encryptage
-file_button = Button(root, text="Lancer l'encryptage", font=("Helvetica", 14), command=encrypted)
+# Button for choose the file to crypte
+file_button = Button(root, text="Choisir le fichier à crypter", font=("Helvetica", 14), command=chooseFile)
 file_button.pack(pady=20)
 
 
-# Button for choose the file to crypte
-file_button = Button(root, text="Choisir le fichier à crypter", font=("Helvetica", 14), command=chooseFile)
+# Button for choose the file to lauch encryptage
+file_button = Button(root, text="Lancer l'encryptage", font=("Helvetica", 14), command=lambda : encrypted("True"))
+file_button.pack(pady=20)
+
+# Button for choose the file to lauch encryptage
+file_button = Button(root, text="Lancer decryptage", font=("Helvetica", 14), command=decryptage)
 file_button.pack(pady=20)
 
 
@@ -335,3 +407,5 @@ quit_button.pack(pady=20)
 shuffle()
 
 root.mainloop() 
+
+
