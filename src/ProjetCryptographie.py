@@ -79,7 +79,7 @@ def printDeck():
 			grid_column = 0
 			grid_row += 1
 
-		imageCard = resize_cards(f'src/images/{card}.png')
+		imageCard = resize_cards(f'images/{card}.png')
 		card_label_[card] = Label(deck_frame)
 		card_label_[card].grid(column=grid_column, row=grid_row, ipady=4, ipadx=2)
 		card_label_[card].config(image=imageCard)
