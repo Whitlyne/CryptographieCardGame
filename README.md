@@ -17,12 +17,6 @@ Sous linux vous devez installer une librairie pour l'affichage :
 sudo apt-get install python3-pil python3-pil.imagetk
 ```
 
-ou de lancer le makefile : 
-
-```sh 
-make install 
-```
-
 Ensuite lancer l'interface graphique :
 
 ```sh
