@@ -1,12 +1,12 @@
 ## Projet de Cryptographie 
 
-Projet de Cryptographie en deuxième semestre de M1 BDIA .
+Projet de Cryptographie en deuxième semestre de M1 BDIA.
 
 ### Comment lancer le projet
 
 #### Nécessaire 
 
-Python 3 dans être installer sur votre ordinateur
+Python 3 doit être installé sur votre ordinateur.
 
 #### Interface visuelle
 Pour un lancement avec une interface visuelle : 
