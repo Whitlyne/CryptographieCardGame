@@ -111,11 +111,6 @@ def chooseFile():
 
     texttodecodetemp = []
     for text in texttodecode:
-		# # Suppression des espaces
-        # textSplit = text.replace(" ", "")
-		# # Suppression des retours chariots
-        # textSplit = textSplit.replace("\n", "")
-        # Mise en minuscule de la chaine de caractere
         textSplit=''.join(x for x in text if x.isalpha())
         textSplit = textSplit.lower()
         texttodecodetemp.append(textSplit)
@@ -407,6 +402,4 @@ quit_button.pack(pady=20)
 # Shuffle Deck On Start
 shuffle()
 
-root.mainloop() 
-
-
+root.mainloop()
