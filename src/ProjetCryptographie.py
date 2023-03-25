@@ -276,10 +276,11 @@ def cryptedMessage(clef,val):
 	if (val == "True"):
 		for string1, string2 in zip(texttodecode, clef):
 			for i in range(len(string1)) :
-				tempo = (alphabet.index(string1[i]) + alphabet.index(string2[i]))
-				if(tempo>25):
-					tempo = tempo - 25 
-				ligne +=alphabet[tempo]
+				print (alphabet.index(string1[i]))
+				tempo = (alphabet.index(string1[i]) + alphabet.index(string2[i])) + 2 
+				if(tempo>26):
+					tempo = tempo - 26
+				ligne +=alphabet[tempo-1]
 			messagecrypted.append(ligne)
 			ligne=""
 		write_array_to_file(messagecrypted,'textCrypted.txt')

@@ -150,7 +150,6 @@ def operation3():
 # Operation 4
 def operation4():
 	global deck
-
 	lastCard = deck[len(deck)-1]
 	valueCard = 0
 	if(lastCard == "jokerred" or lastCard == "jokerblack"):
@@ -167,6 +166,7 @@ def operation4():
 # Operation 5
 def operation5():
 	global deck
+	global alphabet
 	firstCard = deck[0]
 	valueFirstCard = evaluatCard(firstCard)
 	valueCardPseudoAlea = -1
@@ -174,7 +174,7 @@ def operation5():
 	# La carte à la position de la valeur de la première carte (firstCard)
 	print("Valeur de la premiere carte : ", valueFirstCard)
 	cardPseudoAlea = deck[valueFirstCard - 1]
-	print(cardPseudoAlea)
+	print("Valeur de la carte a l'emplacement de la premire carte:",cardPseudoAlea)
 
 	if(cardPseudoAlea == "jokerred" or cardPseudoAlea == "jokerblack"):
 		operation1()
@@ -189,6 +189,7 @@ def operation5():
 			valueCardPseudoAlea = valueCardPseudoAlea - 26	
 	
 	print("Valeur de la carte pseudo aléa : ", valueCardPseudoAlea)
+	print("Lettre correspondante dans l'alphabet : ",alphabet[valueCardPseudoAlea - 1])
 	return valueCardPseudoAlea
 
 # Function to crypt the file
@@ -204,7 +205,6 @@ def encrypted(val):
 	for text in texttodecode:
 		# Second boucle pour traiter chaque éléments de la liste 
 		for element in text:
-			print(element)
 			operation1()
 			operation2()
 			operation3()
