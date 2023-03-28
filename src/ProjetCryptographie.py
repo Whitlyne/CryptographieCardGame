@@ -113,11 +113,10 @@ def chooseFile():
     texttodecodetemp = []
     for text in texttodecode:
         textSplit=''.join(x for x in text if x.isalpha())
-	textSplit=unicode(textSplit)
+        textSplit = unidecode(textSplit)
         textSplit = textSplit.lower()
         texttodecodetemp.append(textSplit)
 
-    texttodecode.clear()
     texttodecode = texttodecodetemp
     print(texttodecode)
 
@@ -250,6 +249,7 @@ def encrypted(val):
 	subClef = ""
 	if(val == "True"):
 		write_array_to_file(deck,"deckToSend.txt")
+
 	#  Boucle pour parcourir tous les éléments de la liste 
 	#  while len(clef) < totalLengOfListTextToDecode:
 	for text in texttodecode:
@@ -275,23 +275,23 @@ def cryptedMessage(clef,val):
 	global alphabet
 	messagecrypted=[]
 	ligne = ''
+	print(deck)
 	if (val == "True"):
 		for string1, string2 in zip(texttodecode, clef):
 			for i in range(len(string1)) :
-				print (alphabet.index(string1[i]))
-				tempo = (alphabet.index(string1[i]) + alphabet.index(string2[i])) + 2 
-				if(tempo>26):
+				tempo = (alphabet.index(string1[i]) + alphabet.index(string2[i])) 
+				if(tempo>25):
 					tempo = tempo - 26
-				ligne +=alphabet[tempo-1]
+				ligne +=alphabet[tempo]
 			messagecrypted.append(ligne)
 			ligne=""
 		write_array_to_file(messagecrypted,'textCrypted.txt')
 	else :
 		for string1, string2 in zip(texttodecode, clef):
 			for i in range(len(string1)) : 
-				tempo = (alphabet.index(string1[i]) - alphabet.index(string2[i]))
-				if(tempo < 0  ):
-					tempo = tempo + 25 
+				tempo = (alphabet.index(string1[i]) - alphabet.index(string2[i])) 
+				if(tempo < 0 ):
+					tempo = tempo + 26
 				ligne +=alphabet[tempo]
 			messagecrypted.append(ligne)
 			ligne=""
