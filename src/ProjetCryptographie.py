@@ -2,6 +2,7 @@ from tkinter import *
 import random
 from tkinter.filedialog import askopenfilename
 from PIL import Image, ImageTk
+from unidecode import unidecode
 
 # Variable
 deck = []
@@ -112,6 +113,7 @@ def chooseFile():
     texttodecodetemp = []
     for text in texttodecode:
         textSplit=''.join(x for x in text if x.isalpha())
+	textSplit=unicode(textSplit)
         textSplit = textSplit.lower()
         texttodecodetemp.append(textSplit)
 
