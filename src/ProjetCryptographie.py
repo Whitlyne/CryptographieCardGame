@@ -222,9 +222,7 @@ def operation5():
 	valueCardPseudoAlea = -1
 
 	# La carte à la position de la valeur de la première carte (firstCard)
-	print("Valeur de la premiere carte : ", valueFirstCard)
 	cardPseudoAlea = deck[valueFirstCard - 1]
-	print(cardPseudoAlea)
 
 	if(cardPseudoAlea == "jokerred" or cardPseudoAlea == "jokerblack"):
 		operation1()
@@ -238,7 +236,6 @@ def operation5():
 		if(valueCardPseudoAlea > 26):
 			valueCardPseudoAlea = valueCardPseudoAlea - 26	
 	
-	print("Valeur de la carte pseudo aléa : ", valueCardPseudoAlea)
 	return valueCardPseudoAlea
 
 # Function to crypt the file
@@ -275,14 +272,14 @@ def cryptedMessage(clef,val):
 	global alphabet
 	messagecrypted=[]
 	ligne = ''
-	print(deck)
 	if (val == "True"):
 		for string1, string2 in zip(texttodecode, clef):
 			for i in range(len(string1)) :
-				tempo = (alphabet.index(string1[i]) + alphabet.index(string2[i])) 
-				if(tempo>25):
+				tempo = (alphabet.index(string1[i]) + alphabet.index(string2[i]))
+				tempo = tempo + 2
+				if(tempo>26):
 					tempo = tempo - 26
-				ligne +=alphabet[tempo]
+				ligne +=alphabet[tempo-1]
 			messagecrypted.append(ligne)
 			ligne=""
 		write_array_to_file(messagecrypted,'textCrypted.txt')
@@ -290,9 +287,9 @@ def cryptedMessage(clef,val):
 		for string1, string2 in zip(texttodecode, clef):
 			for i in range(len(string1)) : 
 				tempo = (alphabet.index(string1[i]) - alphabet.index(string2[i])) 
-				if(tempo < 0 ):
+				if(tempo < 1):
 					tempo = tempo + 26
-				ligne +=alphabet[tempo]
+				ligne +=alphabet[tempo-1]
 			messagecrypted.append(ligne)
 			ligne=""
 		write_array_to_file(messagecrypted,'textDecrypted.txt')
@@ -300,6 +297,7 @@ def cryptedMessage(clef,val):
 def decryptage():
     global deck
     global texttodecode
+    texttodecode=''
     futurdeck = askopenfilename(parent=root, title="Ouvrir votre paquet de cartes", filetypes=[('txt files', '.txt')])
     with open(futurdeck) as file:
         deck=file.readlines()
@@ -316,8 +314,7 @@ def decryptage():
     
     deck.clear()
     deck = decktemp
-    print(deck)
-    
+
     fileToCrypt = askopenfilename(parent=root, title="Ouvrir votre document", filetypes=[('txt files', '.txt')])
     with open(fileToCrypt) as file:
         texttodecode=file.readlines()
@@ -334,7 +331,6 @@ def decryptage():
     
     texttodecode.clear()
     texttodecode = texttodecodetemp
-    print(texttodecode)
     
     encrypted("False")
     
